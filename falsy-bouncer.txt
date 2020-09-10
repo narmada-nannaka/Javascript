@@ -1,0 +1,5 @@
+function bouncer(arr) {
+  return arr.filter(element => Boolean(element) == true);
+}
+
+bouncer([7, "ate", NaN, false, 9]);

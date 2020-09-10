@@ -1,0 +1,86 @@
+//currency units defined in an object
+const currency = {
+    "PENNY": 0.01,
+    "NICKEL": 0.05,
+    "DIME": 0.1,
+    "QUARTER" : 0.25,
+    "ONE": 1,
+    "FIVE": 5,
+    "TEN": 10,
+    "TWENTY": 20,
+    "ONE HUNDRED": 100
+  };
+
+
+function checkCashRegister(price, cash, cid) {
+
+  //object created to return the change status and change value
+  let changeStatus = {
+    status: "INSUFFICIENT_FUNDS",
+    change: []
+  };
+  
+  //calculating the sum of change in the register
+  let registerValue = () => {
+    let change = 0;
+    for (let i=0; i<cid.length; i++) {
+      change = Math.round((change + cid[i][1]) * 100)/100;
+    }
+    return change;
+  };
+
+
+  let changeArray = () => {
+    let changeQuantity = [];
+    let returnQuantity = [];
+    let num = price;
+    //changeQuantity 3d array with denomination, quantity and value of currency
+    for(let i=0; i<cid.length; i++) {
+      let temp = [];
+      let quantity = cid[i][1]/currency[cid[i][0]];
+      if(cid[i][0] in currency &&  quantity!==0 && (cash-price) >= currency[cid[i][0]]) {
+        temp.push(cid[i][0]);
+        temp.push(Math.round(quantity)*100/100);
+        temp.push(currency[cid[i][0]]);
+        changeQuantity.push(temp);
+      }
+    }
+
+    changeQuantity = changeQuantity.reverse();
+    for(let i=0; i<changeQuantity.length && changeQuantity[i][2]<=cash; i++) {
+      //looping through individual currencies
+      let temp = [];
+      let value = 0;
+      let counter = changeQuantity[i][1];
+      while(counter > 0 && (num + changeQuantity[i][2]) <= cash) {
+        num += changeQuantity[i][2];
+        value +=  changeQuantity[i][2];
+        counter --;
+      }
+      if(value !== 0 && value <= (cash-price)){
+        temp.push(changeQuantity[i][0]);
+        temp.push(Math.round(value *100)/100);
+        returnQuantity.push(temp);
+      }
+    }
+    if(num === cash) {
+      return returnQuantity;
+    } else {
+      return [];
+    }
+  };
+
+  let balance = cash - price; // change due in a variable
+  let c = changeArray();
+  //comparing change due to customer and change in register
+  if (registerValue() === balance) {
+    changeStatus.status = "CLOSED";
+    changeStatus.change = cid;
+  } else if(registerValue() > balance && c.length !== 0) {
+    changeStatus.status = "OPEN";
+    changeStatus.change = changeArray();
+  }
+  return changeStatus; // returning change object
+}
+
+checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]);

@@ -1,0 +1,15 @@
+function palindrome(str) {
+  str = str.replace(/[^a-zA-Z\d]/g,"").toLowerCase();
+  let temp = str.split("");
+  temp = temp.reverse();
+  let strReverse = temp.join("").toLowerCase();
+  if(str === strReverse) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+
+palindrome("A man, a plan, a canal. Panama");

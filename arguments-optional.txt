@@ -1,0 +1,22 @@
+function addTogether() {
+  let argsLength = arguments.length;
+  for(let i=0; i<argsLength; i++){
+    if(typeof(arguments[i]) !== "number") {
+      return undefined;
+    }
+  }
+  if(arguments.length === 1) {
+    let temp = arguments[0];
+    return function(arg2) {
+      if(typeof(arg2) !== "number") {
+        return undefined;
+      } else {
+        return arg2 + temp;
+      }
+    }
+  } else {
+    return arguments[0] + arguments[1];
+  }
+}
+
+addTogether(2,3);

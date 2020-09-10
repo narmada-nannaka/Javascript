@@ -1,0 +1,23 @@
+function whatIsInAName(collection, source) {
+  let arr = Object.entries(source);
+  // Only change code below this line
+  let temp= [];
+  for(let i=0;i<collection.length;i++) {
+    let count = 0;
+    arr.forEach(item => {
+      if(collection[i][item[0]] === item[1]){
+        count++;
+      } else {
+        count --;
+      }
+    })
+    if(count >= arr.length/2) {
+      temp.push(collection[i]);
+    }
+    count = 0;
+  }
+  // Only change code above this line
+  return temp;
+}
+
+whatIsInAName([{"a": 1, "b": 2, "c": 3}], {"a": 1, "b": 9999, "c": 3})

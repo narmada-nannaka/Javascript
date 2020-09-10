@@ -1,0 +1,14 @@
+function whatIsInAName(collection, source) {
+  let arr = Object.keys(source);
+  // Only change code below this line
+  return collection.filter(ele => {
+    for(let i=0;i < arr.length; i++) {
+      if(!ele.hasOwnProperty(arr[i]) || ele[arr[i]] !== source[arr[i]]){
+        return false;
+      } 
+    }
+    return true;
+  });
+}
+
+whatIsInAName([{"a": 1, "b": 2, "c": 3}], {"a": 1, "b": 9999, "c": 3})

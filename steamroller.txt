@@ -1,0 +1,9 @@
+function steamrollArray(arr, depth=Infinity) {
+  if(depth > 0) {
+    return arr.reduce((acc,val) => acc.concat(Array.isArray(val) ? steamrollArray(val, depth-1) : val), []);
+  } else {
+    return arr.slice();
+  }
+}
+
+console.log(steamrollArray([1, [2], [3, [[4]]]]));

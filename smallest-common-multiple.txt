@@ -1,0 +1,88 @@
+function smallestCommons(arr) {
+  arr.sort((a,b) => b-a); //sorted to get the range
+  let temp = []; //temp array to store the range
+
+  //temp array filled with the input range
+  for(let i=arr[0]; i>=arr[1]; i--) {
+    temp.push(i);
+  }
+
+  //function to check if the number is prime
+  const isPrime = (num) => {
+    for(let i =2; i<num; i++) {
+      if(num%i === 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  //function to get all indices of an element occurence in array
+  const indexCount = (farr, num) => {
+    let i=-1;
+    let temp = [];
+    while((i = farr.indexOf(num, i+1)) !== -1){
+      temp.push(i);
+    }
+    return temp.length;
+  }; 
+
+  let final = []; //prime numbers queue
+  let progress = []; //non-prime numbers queue
+
+  //verify the array to push all prime numbers into final queue and the remaining into a progress queue
+  for(let i=0; i<temp.length; i++) {
+    if(isPrime(temp[i])) {
+      final.push(temp[i]);
+    } else {
+      progress.push(temp[i]);
+    }
+  }
+
+  //private function to get the maximum prime factor of an element
+  const primeFactor = (ele) => {
+    let temp = [];
+    for(let i=2; i<ele; i++) {
+      if(isPrime(i) && ele%i === 0) {
+        temp.push(i);
+      }
+    }
+    return Math.max(...temp);
+    //let temp = final.filter((item) => ele%item === 0);
+    //return Math.max(...temp);
+  };
+
+  //verify if the final array contains enough prime elements to result in the element
+  const include = (ele) => {
+    final.sort((a,b) => b-a);
+    let temp = [];
+    temp = final.filter((item) => ele%item === 0);
+    let multiples = temp.reduce((a,b) => a*b)
+    if(multiples === ele){
+      return 1; //return 1 if the final array has enough prime elements
+    }
+    return (Math.max(multiples,ele)/Math.min(multiples,ele));
+  }
+
+  //traverse through the non-prime numbers queue to find its prime multiples
+  for(let i=0; i<progress.length; i++) {
+    let ele = progress[i]; //progress queue element
+    let multi = primeFactor(ele);
+    let quot = ele/multi;
+    do {
+      if(isPrime(quot) && (indexCount(final,quot) <=1)) {
+          final.push(quot);
+          if(quot!==multi && isPrime(multi) && (final.indexOf(multi) == -1)){
+            final.push(multi);
+          } 
+      } else if (!isPrime(quot) && include(ele) !== 1) {
+        final.push(include(ele));
+      } 
+      ele = quot; 
+      quot = ele/multi;
+    } while(ele>multi && quot > 2)
+  }
+  return (final.reduce((a,b) => a*b));
+}
+
+smallestCommons([1,13]);

@@ -1,0 +1,18 @@
+function rot13(str) {
+  let decoded = "";
+  let codedArr = [];
+  for(let i=0; i<str.length; i++) {
+      let code = str.charCodeAt(i);
+      if(code>=65 && code<=90) {
+        code = code + 13;
+        code = code > 90 ? (code - 90 + 64) : code;
+        codedArr.push(String.fromCharCode(code));
+      } else {
+        codedArr.push(str.charAt(i));
+      } 
+  }
+  decoded = codedArr.join("");  
+  return decoded;
+}
+
+rot13("SERR PBQR PNZC");

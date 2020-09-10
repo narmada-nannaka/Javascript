@@ -1,0 +1,24 @@
+function sumPrimes(num) {
+  let arr = []; // array to store the prime series
+  let counter = 2; // counter to start the prime series
+
+  //private function to verify if the number is prime
+  function isPrime(num) {
+    for(let i=2; i<num; i++) {
+      if(num%i === 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  do {
+    if(isPrime(counter)) {
+      arr.push(counter);
+    }
+    counter++;
+  } while(counter<=num)
+  return arr.reduce((a,b) => a+b);
+}
+
+sumPrimes(10);
